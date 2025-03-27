@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 페이지</title>
+    <link rel="stylesheet" href="./example1.css">
+</head>
+<body>
+    <main>
+        <h2 style="color: rgb(70, 171, 23);">회원가입</h2>
+
+        <form action="/submit" method="post">
+
+            <label for="id">아이디</label>
+            <input type="text" name="id" id="id" placeholder="최대 15자 미만으로 작성해주세요." maxlength="15" autofocus required>
+
+            <label for="pw">비밀번호</label>
+            <input type="password" name="pw" id="pw" placeholder="최소 8자 이상으로 작성해주세요." minlength="8" required>
+
+            <label for="mail">이메일</label>
+            <input type="email" name="mail" id="mail" placeholder="example@example.org" required>     
+
+            <label for="work">희망 직군</label>
+            <select name="work" id="work" required>
+                <option selected disabled value="">선택</option>
+                <option value="frontend">프론트엔드</option>
+                <option value="backend">백엔드</option>
+                <option value="design">디자인</option>
+            </select>
+
+            <label for="desc">자기소개</label>
+            <textarea name="desc" id="desc" rows="5" placeholder="자신을 소개하는 내용을 간략하게 적어주세요"></textarea>
+
+            <div>
+                <label for="job">직업 <small>(모두 선택)</small></label>
+                <span class="jobs">
+                    <input type="checkbox" id="student">
+                    <label for="student">학생</label>
+                    <input type="checkbox" id="worker">
+                    <label for="worker">직장인</label>
+                    <input type="checkbox" id="jobless">
+                    <label for="jobless">백수</label>
+                    <input type="checkbox" id="뒹굴뒹굴">
+                    <label for="뒹굴뒹굴">됭굴뒹굴</label>
+                </span>
+            </div>
+            
+            <div class="buttons">
+                <button class="reset" type="reset">초기화</button>
+                <button class="submit" type="submit">제출</button>
+            </div>            
+
+        </form>
+    </main>    
+</body>
+</html>
