@@ -1,15 +1,30 @@
-const coutdisplay = document.getElementById("count");
-const increaseButton = document.getElementById("increase");
-const decreaseButton = document.getElementById("decrease");
+const foodbutton = document.querySelectorAll(".food");
+const submitbutton = document.querySelector(".submit");
 
-let count = 0;
+submitbutton.disabled = true;
 
-increaseButton.addEventListener("click", () =>{
-    count++;
-    coutdisplay.textContent = count;
-});
+foodbutton.forEach((btn) => {
+    btn.addEventListener("click", () => {
+        btn.classList.toggle("selected");
+        updatesubmit();
+    });
+});  
 
-decreaseButton.addEventListener("click", () =>{
-    count--;
-    coutdisplay.textContent = count;
+function updatesubmit() {
+    const selected = document.querySelectorAll(".food.selected");
+    const isActive = selected.length > 0;
+    console.log(selected)
+    submitbutton.disabled = !isActive;
+    console.log(isActive)
+    if (isActive) {
+        submitbutton.classList.add("selected");
+    } else {
+        submitbutton.classList.remove("selected");
+    }
+};
+
+submitbutton.addEventListener("click", () => {
+    const selected = document.querySelectorAll(".food.selected");
+    const selectedNames = Array.from(selected).map((item) => item.textContent);
+    console.log("선택한 음식" + selectedNames);
 });
