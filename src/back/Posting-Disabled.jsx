@@ -1,5 +1,7 @@
 import React, { useRef, useState } from "react";
 import Posting from "./Posting";
+import Edit from "./Edit"; // Edit 컴포넌트 import
+
 
 const FolderIcon = () => (
   <svg width="24" height="24" fill="none" stroke="#363636" strokeWidth="2">
@@ -37,6 +39,8 @@ function PostingDisabled() {
   const [desc, setDesc] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [showPosting, setShowPosting] = useState(false);
+  const [showEdit, setShowEdit] = useState(false); // 추가
+
 
   const isTitleValid = title.length > 0 && title.length <= 20;
   const isDescValid = desc.length > 0 && desc.length <= 200;
@@ -57,7 +61,48 @@ function PostingDisabled() {
     setTitle("");
     setDesc("");
     setShowPopup(false);
+    setShowEdit(false); // 추가
   };
+
+  const handleEdit = () => {
+    setShowEdit(true);
+  };
+
+  // Edit 저장 시
+  const handleSaveEdit = ({ image, title, desc }) => {
+    setShowEdit(false);
+    setFile(null); // 파일은 새로 첨부하지 않았다면 null로
+    setTitle(title);
+    setDesc(desc);
+    // 이미지도 필요하다면 setFile 등으로 처리
+  };
+
+  // 1. 수정 모드
+  if (showEdit) {
+    return (
+      <Edit
+        image={file ? URL.createObjectURL(file) : ""}
+        title={title}
+        desc={desc}
+        onSave={handleSaveEdit}
+      />
+    );
+  }
+
+  // 2. 상세 보기 모드
+  if (showPosting) {
+    const imageUrl = file ? URL.createObjectURL(file) : "";
+    return (
+      <Posting
+        image={imageUrl}
+        title={title}
+        desc={desc}
+        date={new Date().toISOString().slice(0, 10).replace(/-/g, ".")}
+        onBack={handleBackToForm}
+        onEdit={handleEdit} // 여기 추가!
+      />
+    );
+    }
 if (showPosting) {
   const imageUrl = file ? URL.createObjectURL(file) : "";
   return (

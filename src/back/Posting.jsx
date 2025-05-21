@@ -7,7 +7,7 @@ const LeftIcon = () => (
   </svg>
 );
 
-function Posting({ image, title, desc, date, onBack }) {
+function Posting({ image, title, desc, date, onBack, onEdit }) {
   return (
     <div style={{ background: "#fff", minHeight: "100vh", padding: 0, margin: 0 }}>
       {/* 헤더 */}
@@ -110,14 +110,17 @@ function Posting({ image, title, desc, date, onBack }) {
         }}>
           Delete Post
         </button>
-        <button style={{
-          border: "1px solid #363636",
-          background: "#fff",
-          borderRadius: 2,
-          fontSize: 22,
-          padding: "14px 40px",
-          color: "#363636"
-        }}>
+        <button
+          style={{
+            border: "1px solid #363636",
+            background: "#fff",
+            borderRadius: 2,
+            fontSize: 22,
+            padding: "14px 40px",
+            color: "#363636"
+          }}
+          onClick={onEdit} // 수정: Edit Post 클릭 시 onEdit 호출
+        >
           Edit Post
         </button>
       </div>
