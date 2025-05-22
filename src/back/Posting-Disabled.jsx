@@ -80,7 +80,7 @@ function DeletePopup({ onClose, onDelete }) {
   );
 }
 
-function PostingDisabled({ post, onGoMain, onSave, mode = "create" }) {
+function PostingDisabled({ post, onGoMain, onSave, onDelete, mode = "create" }) {
   const fileInput = useRef();
   const [file, setFile] = useState(post?.file || null);
   const [title, setTitle] = useState(post?.title || "");
@@ -104,7 +104,6 @@ function PostingDisabled({ post, onGoMain, onSave, mode = "create" }) {
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) setFile(e.target.files[0]);
   };
-
   const handleDrop = (e) => {
     e.preventDefault();
     if (e.dataTransfer.files && e.dataTransfer.files[0]) setFile(e.dataTransfer.files[0]);
@@ -148,6 +147,7 @@ function PostingDisabled({ post, onGoMain, onSave, mode = "create" }) {
     setShowEdit(false);
     setShowDeletePopup(false);
     setShowPopup(false);
+    if (onDelete) onDelete(); // <-- MainPage의 posts 배열에서 삭제
     if (onGoMain) onGoMain();
   };
     // Submit Post 버튼 클릭 시
