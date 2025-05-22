@@ -32,7 +32,31 @@ function Popup({ onClose, onViewPost }) {
   );
 }
 
-function PostingDisabled() {
+function DeletePopup({ onClose, onDelete }) {
+  return (
+    <div style={{
+      position: "fixed", left: 0, top: 0, width: "100vw", height: "100vh",
+      background: "rgba(0,0,0,0.18)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center"
+    }}>
+      <div style={{
+        background: "#fff", borderRadius: 32, padding: "48px 32px 32px 32px", minWidth: 400, textAlign: "center", boxShadow: "0 4px 32px #0002"
+      }}>
+        <button onClick={onClose} style={{
+          position: "absolute", right: 32, top: 32, background: "none", border: "none", fontSize: 32, cursor: "pointer"
+        }}>&times;</button>
+        <div style={{ fontSize: 24, fontWeight: 600, marginBottom: 16, marginTop: 16 }}>
+          Are you sure you want to<br />delete this post?
+        </div>
+        <button style={{
+          width: "100%", background: "#000", color: "#fff", border: "none", borderRadius: 32, fontSize: 20, padding: "14px 0", margin: "24px 0 0 0", fontWeight: 600
+        }} onClick={onDelete}>DELETE</button>
+        <div style={{ fontSize: 20, marginTop: 32, cursor: "pointer" }} onClick={onClose}>CANCEL</div>
+      </div>
+    </div>
+  );
+}
+
+function PostingDisabled({ onGoMain }) {
   const fileInput = useRef();
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
@@ -40,6 +64,7 @@ function PostingDisabled() {
   const [showPopup, setShowPopup] = useState(false);
   const [showPosting, setShowPosting] = useState(false);
   const [showEdit, setShowEdit] = useState(false); // 추가
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
 
 
   const isTitleValid = title.length > 0 && title.length <= 20;
@@ -69,16 +94,38 @@ function PostingDisabled() {
   };
 
   // Edit 저장 시
-  const handleSaveEdit = ({ image, title, desc }) => {
+  const handleSaveEdit = ({ image, title, desc, file: newFile }) => {
     setShowEdit(false);
-    setFile(null); // 파일은 새로 첨부하지 않았다면 null로
     setTitle(title);
     setDesc(desc);
-    // 이미지도 필요하다면 setFile 등으로 처리
+    // 이미지 파일이 새로 첨부되었으면 file 상태를 갱신
+    if (newFile) {
+      setFile(newFile);
+    }
+    setShowPosting(true); // 저장 후 상세화면으로 이동
   };
 
+    // 삭제 버튼 클릭 시 팝업 오픈
+  const handleDeleteClick = () => {
+    setShowDeletePopup(true);
+  };
+
+    // 삭제 팝업에서 DELETE 클릭 시
+  const handleDelete = () => {
+    setFile(null);
+    setTitle("");
+    setDesc("");
+    setShowPosting(false);
+    setShowEdit(false);
+    setShowDeletePopup(false);
+    setShowPopup(false);
+    // 메인화면으로 이동
+    if (onGoMain) onGoMain();
+  };
+
+
   // 1. 수정 모드
-  if (showEdit) {
+if (showEdit) {
     return (
       <Edit
         image={file ? URL.createObjectURL(file) : ""}
@@ -93,28 +140,25 @@ function PostingDisabled() {
   if (showPosting) {
     const imageUrl = file ? URL.createObjectURL(file) : "";
     return (
-      <Posting
-        image={imageUrl}
-        title={title}
-        desc={desc}
-        date={new Date().toISOString().slice(0, 10).replace(/-/g, ".")}
-        onBack={handleBackToForm}
-        onEdit={handleEdit} // 여기 추가!
-      />
+      <>
+        <Posting
+          image={imageUrl}
+          title={title}
+          desc={desc}
+          date={new Date().toISOString().slice(0, 10).replace(/-/g, ".")}
+          onBack={handleBackToForm}
+          onEdit={handleEdit}
+          onDeleteClick={handleDeleteClick} // 추가
+        />
+        {showDeletePopup && (
+          <DeletePopup
+            onClose={() => setShowDeletePopup(false)}
+            onDelete={handleDelete}
+          />
+        )}
+      </>
     );
-    }
-if (showPosting) {
-  const imageUrl = file ? URL.createObjectURL(file) : "";
-  return (
-    <Posting
-      image={imageUrl}
-      title={title}
-      desc={desc}
-      date={new Date().toISOString().slice(0, 10).replace(/-/g, ".")}
-      onBack={handleBackToForm} // 여기서 handleBackToForm 사용
-    />
-  );
-}
+  }
 
 return (
   <div style={{ background: "#fff", minHeight: "100vh", padding: 0, margin: 0 }}>

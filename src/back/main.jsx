@@ -20,7 +20,8 @@ const images = Array.from({ length: 16 }).map((_, i) => ({
 function MainPage() {
   const [showPosting, setShowPosting] = useState(false);
 
-  if (showPosting) return <PostingDisabled />;
+  if (showPosting)
+    return <PostingDisabled onGoMain={() => setShowPosting(false)} />;
 
   return (
     <div style={{ background: "#fff", minHeight: "100vh", padding: 0, margin: 0 }}>

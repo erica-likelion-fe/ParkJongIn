@@ -7,12 +7,37 @@ const FolderIcon = () => (
   </svg>
 );
 
+// 모달 컴포넌트 추가
+function EditModal({ onClose, onViewPost }) {
+  return (
+    <div style={{
+      position: "fixed", left: 0, top: 0, width: "100vw", height: "100vh",
+      background: "rgba(0,0,0,0.18)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center"
+    }}>
+      <div style={{
+        background: "#fff", borderRadius: 32, padding: "48px 32px 32px 32px", minWidth: 400, textAlign: "center", boxShadow: "0 4px 32px #0002"
+      }}>
+        <button onClick={onClose} style={{
+          position: "absolute", right: 32, top: 32, background: "none", border: "none", fontSize: 32, cursor: "pointer"
+        }}>&times;</button>
+        <div style={{ fontSize: 28, fontWeight: 600, marginBottom: 16, marginTop: 16 }}>
+          Post successfully edited.<br />See changes?
+        </div>
+        <button style={{
+          width: "100%", background: "#000", color: "#fff", border: "none", borderRadius: 32, fontSize: 26, padding: "16px 0", margin: "24px 0 0 0", fontWeight: 600
+        }} onClick={onViewPost}>VIEW POST !</button>
+        <div style={{ fontSize: 26, marginTop: 32, cursor: "pointer" }} onClick={onClose}>CANCEL</div>
+      </div>
+    </div>
+  );
+}
+
 function Edit({ image, title: initialTitle, desc: initialDesc, onSave }) {
   const fileInput = useRef();
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState(initialTitle || "");
   const [desc, setDesc] = useState(initialDesc || "");
-  const [saved, setSaved] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const isTitleValid = title.length > 0 && title.length <= 20;
   const isDescValid = desc.length > 0 && desc.length <= 200;
@@ -23,17 +48,22 @@ function Edit({ image, title: initialTitle, desc: initialDesc, onSave }) {
     if (e.target.files && e.target.files[0]) setFile(e.target.files[0]);
   };
 
+  // 저장 버튼 클릭 시 모달 띄우기
   const handleSave = () => {
-    setSaved(true);
-    setTimeout(() => {
-      if (onSave) {
-        onSave({
-          image: file ? URL.createObjectURL(file) : image,
-          title,
-          desc,
-        });
-      }
-    }, 800); // 저장 효과 후 상세로 이동
+    setShowModal(true);
+  };
+
+  // 모달에서 VIEW POST 클릭 시 onSave 호출
+  const handleViewPost = () => {
+    setShowModal(false);
+    if (onSave) {
+      onSave({
+        image: file ? URL.createObjectURL(file) : image,
+        title,
+        desc,
+        file, // file 객체도 넘겨줌 (원본 파일 필요시)
+      });
+    }
   };
 
   return (
@@ -173,10 +203,16 @@ function Edit({ image, title: initialTitle, desc: initialDesc, onSave }) {
             disabled={!canSave}
             onClick={handleSave}
           >
-            {saved ? "Changes Saved" : "Save Changes"}
+            Changes Saved
           </button>
         </div>
       </main>
+      {showModal && (
+        <EditModal
+          onClose={() => setShowModal(false)}
+          onViewPost={handleViewPost}
+        />
+      )}
     </div>
   );
 }

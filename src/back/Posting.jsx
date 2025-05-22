@@ -1,13 +1,12 @@
 import React from "react";
 
-// 좌측 화살표 아이콘
 const LeftIcon = () => (
   <svg width="36" height="36" fill="none" stroke="#000" strokeWidth="3">
     <polyline points="24 10 14 18 24 26" />
   </svg>
 );
 
-function Posting({ image, title, desc, date, onBack, onEdit }) {
+function Posting({ image, title, desc, date, onBack, onEdit, onDeleteClick }) {
   return (
     <div style={{ background: "#fff", minHeight: "100vh", padding: 0, margin: 0 }}>
       {/* 헤더 */}
@@ -100,14 +99,17 @@ function Posting({ image, title, desc, date, onBack, onEdit }) {
         gap: 40,
         marginTop: 80
       }}>
-        <button style={{
-          border: "1px solid #363636",
-          background: "#fff",
-          borderRadius: 2,
-          fontSize: 22,
-          padding: "14px 40px",
-          color: "#363636"
-        }}>
+        <button
+          style={{
+            border: "1px solid #363636",
+            background: "#fff",
+            borderRadius: 2,
+            fontSize: 22,
+            padding: "14px 40px",
+            color: "#363636"
+          }}
+          onClick={onDeleteClick} // 추가
+        >
           Delete Post
         </button>
         <button
@@ -119,7 +121,7 @@ function Posting({ image, title, desc, date, onBack, onEdit }) {
             padding: "14px 40px",
             color: "#363636"
           }}
-          onClick={onEdit} // 수정: Edit Post 클릭 시 onEdit 호출
+          onClick={onEdit}
         >
           Edit Post
         </button>

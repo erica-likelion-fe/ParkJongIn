@@ -1,111 +1,36 @@
-.container {
-  max-width: 960px;
-  margin: 20px auto;
-  padding: 20px;
-  font-family: sans-serif;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
+/* src/App.css */
 
-.app-header {
-  background-color: #333;
-  color: white;
-  padding: 15px;
-  text-align: center;
-  margin-bottom: 20px;
-  border-radius: 4px 4px 0 0;
-}
-
-.app-header h1 {
+/* 기본적인 CSS 리셋 (선택 사항이지만 권장) */
+body, h1, h2, h3, p, ul, li, button, figure, figcaption {
   margin: 0;
-  font-size: 1.8em;
-}
-
-.app-nav {
-  background-color: #e9e9e9;
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 4px;
-}
-
-.app-nav ul {
-  list-style: none;
   padding: 0;
-  margin: 0;
-  display: flex;
+  box-sizing: border-box;
 }
 
-.app-nav li {
-  margin-right: 15px;
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif; /* 기본 폰트 스택 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #FFFFFF; /* 기본 배경 흰색 */
+  color: #000000; /* 기본 글자색 검정 */
 }
 
-.app-nav a {
-  text-decoration: none;
-  color: #333;
-  font-weight: bold;
-}
-
-.app-nav a:hover {
-  color: #007bff;
-}
-
-.content-area {
-  display: flex;
-  justify-content: center;
+/* 전체 앱 컨테이너가 필요하다면 (선택 사항) */
+/* .app-container {
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 20px;
-  background-color: #fff;
-  border-radius: 4px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+} */
+
+/* 링크 기본 스타일 제거 */
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
-.create-form {
-  width: 100%;
-  max-width: 400px;
-}
-
-.create-form h2 {
-  text-align: center;
-  margin-top: 0;
-  margin-bottom: 15px;
-  color: #333;
-}
-
-.create-form .form-group {
-  margin-bottom: 15px;
-}
-
-.create-form label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: 500;
-}
-
-.create-form input[type="text"],
-.create-form textarea {
-  width: calc(100% - 20px);
-  padding: 8px 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 0.95rem;
-}
-
-.create-form textarea {
-  min-height: 100px;
-  resize: vertical;
-}
-
-.create-form button[type="submit"] {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
+button {
   cursor: pointer;
-  font-size: 1rem;
-  width: 100%;
-}
-
-.create-form button[type="submit"]:hover {
-  background-color: #0056b3;
+  font-family: inherit; /* 버튼도 body 폰트 상속 */
 }
