@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import Posting from "./Posting";
 import Edit from "./Edit";
+import { createGallery } from "../api/axios"; // 상단에 import
 
 // 좌측 상단 메인으로 버튼
 function MainButton({ onClick }) {
@@ -151,17 +152,26 @@ function PostingDisabled({ post, onGoMain, onSave, onDelete, mode = "create" }) 
     if (onGoMain) onGoMain();
   };
     // Submit Post 버튼 클릭 시
-  const handleSubmit = () => {
-    if (onSave) {
-      onSave({
-        image: file ? URL.createObjectURL(file) : "",
-        title,
-        desc,
-        file,
-      });
+const handleSubmit = async () => {
+    // 1. 서버에 POST 요청
+    const formData = new FormData();
+    formData.append("image", file);
+    const data = {
+      title : title,
+      description: desc,
     }
-    setShowPopup(false);
-    setShowPosting(true);
+    formData.append("data", JSON.stringify(data));
+    try {
+      const res = await createGallery({
+        formData // 실제로는 파일 업로드 방식에 따라 다를 수 있음
+      });
+      // 2. 성공 시 프론트 상태 갱신
+      if (onSave) onSave(res.data); // 서버에서 받은 데이터로 posts 갱신
+      setShowPopup(false);
+      setShowPosting(true);
+    } catch (e) {
+      alert("글 생성 실패");
+    }
   };
 
   // 1. 수정 모드
